@@ -20,7 +20,7 @@ if (OAUTH_CONSUMER_KEY == '' || OAUTH_CONSUMER_SECRET == '') {
 	throw new \InvalidArgumentException('You need an Evernote API key to begin, grab one at <a href="http://dev.evernote.com/support/api_key.php">http://dev.evernote.com/support/api_key.php</a>.');
 }
 
-$evernoteAuth = new EvernoteOAuth(true);
+$evernoteAuth = new Lemon\EvernoteOAuth(true);
 $evernoteAuth->setConsumerKey(OAUTH_CONSUMER_KEY)
 			 ->setConsumerSecret(OAUTH_CONSUMER_SECRET)
 			 ->setCallbackUrl($evernoteAuth->buildUrl('?action=callback'))
@@ -54,7 +54,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'connect') {
 
 // IF we have credentials load our library wrapper
 if (isset($_SESSION['accessTokenInfo']) && !empty($_SESSION['accessTokenInfo'])) {
-	$evernote = new Evernote(
+	$evernote = new Lemon\Evernote(
 		$_SESSION['accessTokenInfo']['oauth_token'],
 		$_SESSION['accessTokenInfo']['edam_noteStoreUrl']
 	);

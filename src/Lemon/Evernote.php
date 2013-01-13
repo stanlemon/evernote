@@ -1,8 +1,11 @@
 <?php
+namespace Lemon;
 
 use EDAM\NoteStore\NoteStoreClient;
 use EDAM\NoteStore\NoteFilter;
 use EDAM\NoteStore\NotesMetadataResultSpec;
+use TBinaryProtocol;
+use THttpClient;
 
 class Evernote {
 

@@ -1,4 +1,6 @@
 <?php
+namespace Lemon;
+
 use Guzzle\Http\Client;
 use Guzzle\Plugin\Oauth\OauthPlugin;
 

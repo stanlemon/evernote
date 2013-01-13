@@ -27,9 +27,11 @@
             }
         }
     ],
-	"autoload": {
-		"classmap": ["lib/"]
-	},
+    "autoload": {
+        "psr-0": { 
+            "": "src/"
+         }
+    },
     "minimum-stability": "dev",
     "require": {
         "evernote/evernote-sdk-php": "dev-master",
