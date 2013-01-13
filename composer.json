@@ -1,5 +1,5 @@
 {
-    "name": "lemon/evernote",
+    "name": "stanlemon/evernote",
     "description": "Evernote PHP OAuth Example",
     "keywords": ["evernote", "oauth", "guzzle"],
     "homepage": "http://stanlemon.net",
