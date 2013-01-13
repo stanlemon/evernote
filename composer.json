@@ -1,0 +1,38 @@
+{
+    "name": "lemon/evernote",
+    "description": "Evernote PHP OAuth Example",
+    "keywords": ["evernote", "oauth", "guzzle"],
+    "homepage": "http://stanlemon.net",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Stan Lemon",
+            "email": "stosh1985@gmail.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "evernote/evernote-sdk-php",
+                "version": "dev-master",
+                "autoload": {
+                    "classmap": ["lib/"]
+                },
+                "source": {
+                    "url": "https://github.com/evernote/evernote-sdk-php.git",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
+        }
+    ],
+	"autoload": {
+		"classmap": ["lib/"]
+	},
+    "minimum-stability": "dev",
+    "require": {
+        "evernote/evernote-sdk-php": "dev-master",
+		"guzzle/guzzle": "3.0.*"
+    }
+}
