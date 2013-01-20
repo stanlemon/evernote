@@ -65,6 +65,11 @@ class Evernote {
 		$spec->includeNotebookGuid = true;
 
 		$notes = $client->findNotesMetadata($this->authToken, new NoteFilter(), 0, $total+1, $spec);
+		
+		foreach ($notes->notes as $key => $note) {
+			$notes->notes[$key]->created = round($note->created/1000);
+			$notes->notes[$key]->updated = round($note->updated/1000);
+		}
 
 		return $notes->notes;
 	}
@@ -73,6 +78,8 @@ class Evernote {
 		$client = $this->loadClient();
 		$note = $client->getNote($this->authToken, $noteGuid, true, true, true, true);
 
+		$note->created = round($note->created/1000);
+		$note->updated = round($note->updated/1000);
 		$note->tags = array();
 
 		if (isset($note->tagGuids)) {
