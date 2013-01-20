@@ -45,7 +45,7 @@ $app->get('/', function() use($app){
 		
 		foreach ($notebooks as $key => $notebook) {
 			$notebooks[$key] = (array) $notebook;
-			$notebooks[$key]['notes'] = $evernote->listNotes($notebook->guid);
+			$notebooks[$key]['notes'] = $app['evernote']->listNotes($notebook->guid);
 		}
 	}
 
