@@ -84,6 +84,14 @@
 					<td>{{note.title}}</td>
 				</tr>
 				<tr>
+					<td>tags</td>
+					<td>
+						{% for tag in note.tags %}
+							{{tag}}{% if not loop.last %},{% endif %}
+						{% endfor %}
+					</td>
+				</tr>
+				<tr>
 					<td>content</td>
 					<td>{{note.content|raw}}</td>
 				</tr>

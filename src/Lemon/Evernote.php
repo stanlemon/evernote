@@ -72,6 +72,19 @@ class Evernote {
 	public function getNote($noteGuid) {
 		$client = $this->loadClient();
 		$note = $client->getNote($this->authToken, $noteGuid, true, true, true, true);
+
+		$note->tags = array();
+
+		if (isset($note->tagGuids)) {
+			$allTags = $this->listTags();
+
+			foreach ($note->tagGuids as $guid) {
+				if (isset($allTags[$guid])) {
+					$note->tags[] = $allTags[$guid];
+				}
+			}
+		}
+
 		return $note;
 	}
 	
@@ -114,5 +127,18 @@ class Evernote {
 		$note->content = $dom->saveHTML($dom->documentElement);
 
 		return $note;
+	}
+	
+	public function listTags() {
+		$client = $this->loadClient();
+		$tags = $client->listTags($this->authToken);
+		
+		$tagsByGuid = array();
+		
+		foreach ($tags as $tag) {
+			$tagsByGuids[$tag->guid] = $tag->name;
+		}
+		
+		return $tagsByGuids;
 	}
 }
