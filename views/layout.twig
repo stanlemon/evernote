@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>Evernote PHP OAuth Example</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width">
+		<style>body { padding-top: 60px; }</style>
+		<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
+	</head>
+	<body>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</a>
+
+					<a class="brand" href="#">Evernote</a>
+					<div class="nav-collapse collapse">
+						<ul class="nav">
+							<li class="active"><a href="#">Home</a></li>
+					 	</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+
+		<h1>Evernote PHP OAuth Example</h1>
+
+		<p><a class="btn btn-primary" href="{{app.url_generator.generate('connect')}}">Click here to authenticate</a></p>
+
+		<p><a class="btn btn-warning" href="{{app.url_generator.generate('reset')}}">Click here to reset the session.</a></p>
+
+		{% if oauth is not empty %}
+			<br />
+
+			<h3>OAuth Credentials</h3>
+			<table class="table table-striped">
+			{% for key, value in oauth %}
+				<tr>
+					<td>{{key}}</td>
+					<td>{{value}}</td>
+				</tr>
+			{% endfor %}
+			</table>
+		{% endif %}
+		
+		{% if notebooks is not empty %}
+			<br />
+
+			<h3>Evernote Notebooks</h3>
+			<table class="table table-striped">
+			{% for notebook in notebooks %}
+				<tr>
+					<td>{{notebook.name}}</td>
+				</tr>
+			{% endfor %}
+			</table>
+		{% endif %}
+	</body>
+</html>
