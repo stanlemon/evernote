@@ -29,38 +29,80 @@
 			</div>
 		</div>
 		<div class="container">
+			<h1>Evernote PHP OAuth Example</h1>
 
-		<h1>Evernote PHP OAuth Example</h1>
+			<p><a class="btn btn-primary" href="{{app.url_generator.generate('connect')}}">Click here to authenticate</a></p>
 
-		<p><a class="btn btn-primary" href="{{app.url_generator.generate('connect')}}">Click here to authenticate</a></p>
+			<p><a class="btn btn-warning" href="{{app.url_generator.generate('reset')}}">Click here to reset the session.</a></p>
 
-		<p><a class="btn btn-warning" href="{{app.url_generator.generate('reset')}}">Click here to reset the session.</a></p>
+			{% if oauth is defined and oauth is not empty %}
+				<br />
 
-		{% if oauth is not empty %}
-			<br />
-
-			<h3>OAuth Credentials</h3>
-			<table class="table table-striped">
-			{% for key, value in oauth %}
-				<tr>
-					<td>{{key}}</td>
-					<td>{{value}}</td>
-				</tr>
-			{% endfor %}
-			</table>
-		{% endif %}
+				<h3>OAuth Credentials</h3>
+				<table class="table table-striped">
+				{% for key, value in oauth %}
+					<tr>
+						<td>{{key}}</td>
+						<td>{{value}}</td>
+					</tr>
+				{% endfor %}
+				</table>
+			{% endif %}
 		
-		{% if notebooks is not empty %}
-			<br />
+			{% if notebooks is defined and notebooks is not empty %}
+				<br />
 
-			<h3>Evernote Notebooks</h3>
+				<h3>Evernote Notebooks</h3>
+				{% for notebook in notebooks %}
+					<h4>
+						{{notebook.name}}
+						{% if notebook.defaultNotebook %}
+							<small><em>Default</em></small>
+						{% endif %}
+					</h4>
+					<table class="table table-striped">
+					{% for note in notebook.notes %}
+						<tr>
+							<td>{{note.guid}}</td>
+							<td><a href="{{app.url_generator.generate('note', {id: note.guid})}}">{{note.title}}</a></td>
+							<td>{{note.created|date("m/d/y")}}</td>
+							<td>{{note.updated|date("m/d/y")}}</td>
+						</tr>
+					{% endfor %}
+					</table>
+				{% endfor %}
+			{% endif %}
+			
+			{% if note is defined and note is not empty %}
 			<table class="table table-striped">
-			{% for notebook in notebooks %}
 				<tr>
-					<td>{{notebook.name}}</td>
+					<td>guid</td>
+					<td>{{note.guid}}</td>
 				</tr>
-			{% endfor %}
+				<tr>
+					<td>title</td>
+					<td>{{note.title}}</td>
+				</tr>
+				<tr>
+					<td>content</td>
+					<td>{{note.content|raw}}</td>
+				</tr>
+				<tr>
+					<td>created</td>
+					<td>{{note.created|date("m/d/y")}}</td>
+				</tr>
+				<tr>
+					<td>updated</td>
+					<td>{{note.updated|date("m/d/y")}}</td>
+				</tr>
 			</table>
-		{% endif %}
+			{% endif %}
+
+			<hr />
+
+			<footer>
+				Copyright &copy; {{"now"|date("Y")}}
+			</footer>
+		</div>
 	</body>
 </html>

@@ -74,4 +74,45 @@ class Evernote {
 		$note = $client->getNote($this->authToken, $noteGuid, true, true, true, true);
 		return $note;
 	}
+	
+	public function getNoteAsHtml($noteGuid) {
+		$note = (object) $this->getNote($noteGuid);
+
+		$doc = new \DOMDocument();
+		$doc->loadXML($note->content);
+
+		// Loop through every resource and embed it
+		foreach ($doc->getElementsByTagName('en-media') as $media) {
+			$type = $media->getAttribute('type');
+			$hash = $media->getAttribute('hash');
+
+			$imgSrc = false;
+			foreach ($note->resources as $resource) {
+				// Is there a better way to match this hash?
+				if (false !== strpos($resource->recognition->body, $hash)) {
+					$imgSrc = $resource->data->body;
+				}
+			}
+
+			if ($imgSrc) {
+				$img = $doc->createElement('img');
+				$img->setAttribute('src', 'data:'  .$type . ';base64,' . base64_encode($imgSrc));
+			
+				$media->parentNode->replaceChild($img, $media);
+			}
+		}
+
+		$dom = new \DOMDocument();
+		$dom->loadXml("<div></div>");
+
+		foreach ($doc->getElementsByTagName('en-note')->item(0)->childNodes as $child) {
+			$node = $dom->importNode($child, true);
+			
+			$dom->documentElement->appendChild($node);
+		}
+
+		$note->content = $dom->saveHTML($dom->documentElement);
+
+		return $note;
+	}
 }

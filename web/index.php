@@ -24,18 +24,29 @@ $app['oauth'] = $app->share(function() use($app){
 	return $oauth;
 });
 
+$app['evernote'] = $app->share(function() use($app){
+	$oauth = $app['session']->get('oauth');
+
+	$evernote = new Lemon\Evernote(
+		$oauth['oauth_token'],
+		$oauth['edam_noteStoreUrl']
+	);
+
+	return $evernote;
+});
+
 $app->get('/', function() use($app){
 	$oauth = $app['session']->get('oauth');
 
 	if (empty($oauth)) {
 		$notebooks = null;
 	} else {
-		$evernote = new Lemon\Evernote(
-			$oauth['oauth_token'],
-			$oauth['edam_noteStoreUrl']
-		);
+		$notebooks = $app['evernote']->listNotebooks();
 		
-		$notebooks = $evernote->listNotebooks();
+		foreach ($notebooks as $key => $notebook) {
+			$notebooks[$key] = (array) $notebook;
+			$notebooks[$key]['notes'] = $evernote->listNotes($notebook->guid);
+		}
 	}
 
 	return $app['twig']->render('layout.twig', array(
@@ -83,5 +94,13 @@ $app->get('/reset', function() use($app){
 		$app['url_generator']->generate('home')
 	);
 })->bind('reset');
+
+$app->get('/note/{id}', function($id) use($app){
+	$note = (array) $app['evernote']->getNoteAsHtml($id);
+
+	return $app['twig']->render('layout.twig', array(
+		'note' => $note
+	));
+})->bind('note');
 
 $app->run();
